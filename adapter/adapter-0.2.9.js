@@ -507,10 +507,11 @@ if (typeof window === 'undefined' || !window.navigator) {
 
 } else if (navigator.mediaDevices && navigator.userAgent.match(
     /Edge\/(\d+).(\d+)$/)) {
-      window.alert("Edge Browser is not supported");
-        window.alert("Please use the link on Chrome browser");
-        window.alert("Please close this browser and start Chrome browser to show best results");
-  webrtcUtils.log('This appears to be Edge');
+
+        window.alert("This browser is not supported");
+          window.alert("Please open this application on Chrome browser");
+          window.alert("Please close this browser to see best results");
+          webrtcUtils.log('This appears to be Edge');
   webrtcDetectedBrowser = 'edge';
 
   webrtcDetectedVersion = webrtcUtils.extractVersion(navigator.userAgent,
@@ -1677,9 +1678,9 @@ if (typeof window === 'undefined' || !window.navigator) {
 } else {
   webrtcUtils.log('Browser does not appear to be WebRTC-capable');
 
-  window.alert("Internet Explorer is not supported");
-    window.alert("Please use the link on Chrome browser");
-    window.alert("Please close this browser and start Chrome browser to show best results");
+  window.alert("This browser is not supported");
+    window.alert("Please open this application on Chrome browser");
+    window.alert("Please close this browser to see best results");
 }
 
 // Returns the result of getUserMedia as a Promise.
