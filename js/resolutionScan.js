@@ -29,16 +29,17 @@ $(document).ready(function() {
 
 });
 
+
 function gotDevices(deviceInfos) {
     $('#selectArea').show();
-    var camcount = 1;
-    //used for labeling if the device label is not enumerated
+    var camcount = 1;    //used for labeling if the device label is not enumerated
     for (var i = 0; i !== deviceInfos.length; ++i) {
         var deviceInfo = deviceInfos[i];
         var option = document.createElement('option');
         option.value = deviceInfo.deviceId;
         if (deviceInfo.kind === 'videoinput') {
             camDevices.push(deviceInfo);
+            camcount++;
         }
     }
     if (camDevices.length > 0) {
@@ -53,7 +54,14 @@ function errorCallback(error) {
     console.log('navigator.getUserMedia error: ', error);
 }
 
-navigator.mediaDevices.enumerateDevices().then(gotDevices).catch(errorCallback);
+navigator.mediaDevices.getUserMedia({ audio:false, video: true }).then(function(stream){
+     stream.getTracks().forEach(function (track) {
+        track.stop();
+    });
+    navigator.mediaDevices.enumerateDevices()
+    .then(gotDevices)
+    .catch(errorCallback);
+});
 
 //calls getUserMedia for a given camera and constraints
 function gum(device) {
@@ -130,11 +138,11 @@ video.onloadedmetadata = displayVideoDimensions;
 function captureResults(status) {
     if (status === 'pass') {
         if (video.videoHeight >= 720) {
-            var res = `${camDevices[currentDevice].label} - ${video.videoWidth}x${video.videoHeight}`;
+            var res = `${camDevices[currentDevice].label || `Camera ${currentDevice + 1}`} - ${video.videoWidth}x${video.videoHeight}`;
             $('#ress').append(`<span class="result">${res} is Accepted !</span>`);
             oneSuccess = true;
         } else {
-            var res = `${camDevices[currentDevice].label} - ${video.videoWidth}x${video.videoHeight}`;
+            var res = `${camDevices[currentDevice].label || `Camera ${currentDevice + 1}`} - ${video.videoWidth}x${video.videoHeight}`;
             $('#ress').append(`<span class="result1">${res} did not meet our requirements. </span>`);
             oneSuccess = true;
         }
